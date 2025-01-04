@@ -1,4 +1,7 @@
 import json
+import pandas as pd
+from datetime import datetime
+
 
 # Load the JSON data from the file
 with open('SBPBackup20241223.json', 'r') as file:
@@ -8,7 +11,7 @@ my_songs =[]
 
 for song in data['songs']:
     my_songs.append(dict(
-                         id=song['Id']
+                         songID=song['Id']
                         ,artist=song['author']
                         ,title=song['name']
                         )
@@ -18,9 +21,9 @@ my_sets = []
 
 for set in data['sets']:
     my_sets.append(dict(
-                         id=set['details']['Id']
-                        ,name=set['details']['name']
-                        ,date=set['details']['date']
+                         setID=set['details']['Id']
+                        ,setName=set['details']['name']
+                        ,setDate=datetime.fromisoformat(set['details']['date'].replace('Z', '')).date()
                         )
                     )
     
@@ -36,14 +39,12 @@ for set in data['sets']:
         my_set_songs.append(dict(
                                 # setID=song['SetId']
                                  setID = detailSetID
-                                ,setName = detailSetName
+                                # ,setName = detailSetName
                                 ,songOrder=song['Order']
                                 ,songID=song['SongId']                        
                                 )
-                            )
+                            ) 
         
-import pandas as pd
-
 songs_df = pd.DataFrame(my_songs)
 sets_df = pd.DataFrame(my_sets)
 set_songs_df = pd.DataFrame(my_set_songs)
