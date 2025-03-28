@@ -1,0 +1,14 @@
+{
+    "version": "2.0.0",
+    "runOn": "folderOpen",
+    "tasks": [
+      {
+        "label": "Install Requirements",
+        "type": "shell",
+        "command": "${config:python.defaultInterpreterPath}",
+        "args": ["-m", "pip", "install", "-r", "requirements.txt"],
+        "problemMatcher": []
+      }
+    ]
+  }
+  
