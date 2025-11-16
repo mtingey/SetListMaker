@@ -31,7 +31,31 @@ For **Python 3.11–3.12** (legacy, original pinned versions):
 pip install -r requirements.txt
 ```
 
-### 3. Verify Installation
+### 3. Configure Environment Variables (if using Google Sheets integration)
+
+If you plan to use the `gsheet.ipynb` notebook (which syncs with Google Sheets), set up your credentials:
+
+1. Copy the template file:
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Fill in your Google API credentials in `.env`:
+   ```
+   GOOGLE_SHEETS_ID=your_sheets_id_here
+   GOOGLE_API_KEY=your_api_key_here
+   ```
+
+   To get these values:
+   - Visit [Google Cloud Console](https://console.cloud.google.com/)
+   - Create a new project or select an existing one
+   - Enable the Google Sheets API
+   - Create an API key credential
+   - Get your Google Sheets ID from the URL: `https://docs.google.com/spreadsheets/d/{SHEETS_ID}/edit`
+
+**Note:** `.env` is listed in `.gitignore` and will never be committed to the repo, keeping your credentials safe.
+
+### 4. Verify Installation
 
 Run the smoke-check script to confirm everything is working:
 
@@ -66,7 +90,7 @@ Set Songs:   770 records
 
 - **`Songs.ipynb`** – Notebook where the SBP parsing logic was first explored; shows how DataFrames are built and joined.
 
-- **`gsheet.ipynb`** – Notebook that experiments with fuzzy-matching SBP songs to a Google Sheets list (requires `.env` with `GSHEET_API_KEY` and `C46_GSHEET_ID`).
+- **`gsheet.ipynb`** – Notebook that experiments with fuzzy-matching SBP songs to a Google Sheets list (requires Google API credentials in `.env`; see Setup section).
 
 - **`SBPBackup20241223.json`** – Sample SBP backup export (JSON format).
 
