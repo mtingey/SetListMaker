@@ -1,0 +1,5 @@
+#Notes for my future self:
+
+I used the SBP Manager browser app to create the backup that I'm using here. I did that by connecting to browser, clicking the ? icon in top right, and then using the 'BACKUP LIBRARY' button in the modal presented there. This downloaded the backup file for me which I renamed (including making the extension be .zip) extracted, removed the leading version number (in this case '1.0') from the extracted dataFile.txt file, formatted using [jsonformatter.curiousconcept.com](jsonformatter.curiousconcept.com), created a .json file in my project here which I could use, and pasted the formatted .json into that file.
+
+I did get a previous backup file that didn't actually seem to work completely as it only had the most recent set in it. Not sure whether I generated that on the tablet itself or otherwise, but it wasn't complete.
