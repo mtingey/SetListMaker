@@ -32,9 +32,9 @@ Thumbs.db
 .env
 .env.local
 
-# Excel exports (optional - comment out if you want to track them)
-# *.xlsx
-# *.xls
+# Excel exports
+*.xlsx
+*.xls
 
 # junk / temp
 junk.json
