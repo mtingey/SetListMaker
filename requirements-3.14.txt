@@ -1,0 +1,15 @@
+# SetListMaker dependencies for Python 3.14+
+# Excludes fuzzyset and python-Levenshtein (Python 3.14 incompatible)
+# Use RapidFuzz instead for fuzzy string matching
+
+pandas==2.3.3
+numpy==2.3.4
+jupyter==1.1.1
+jupyterlab==4.4.10
+google-api-python-client==2.187.0
+google-auth==2.43.0
+google-auth-httplib2==0.2.1
+RapidFuzz==3.14.3
+python-dotenv==1.2.1
+requests==2.32.5
+openpyxl==3.1.5

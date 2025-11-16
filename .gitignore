@@ -1,0 +1,40 @@
+# Virtual Environment
+bin/
+lib/
+pyvenv.cfg
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local environment variables
+.env
+.env.local
+
+# Excel exports (optional - comment out if you want to track them)
+# *.xlsx
+# *.xls
+
+# junk / temp
+junk.json

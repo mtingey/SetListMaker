@@ -1,0 +1,28 @@
+# Core data processing
+pandas>=2.0.0
+numpy>=2.0.0
+openpyxl>=3.1.0
+
+# Jupyter & IPython
+jupyter>=1.0.0
+jupyterlab>=4.0.0
+ipykernel>=6.0.0
+ipython>=8.0.0
+
+# Google Sheets API
+google-api-python-client>=2.0.0
+google-auth>=2.0.0
+google-auth-httplib2>=0.2.0
+
+# Fuzzy matching
+fuzzyset>=0.1.0
+python-Levenshtein>=0.21.0
+RapidFuzz>=3.0.0
+
+# Utilities
+python-dotenv>=1.0.0
+requests>=2.0.0
+
+# Development/debugging (optional)
+# debugpy>=1.0.0
+# psutil>=7.0.0
