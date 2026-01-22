@@ -31,6 +31,36 @@ For **Python 3.11–3.12** (legacy, original pinned versions):
 pip install -r requirements.txt
 ```
 
+### Developer setup (quick copy-paste)
+
+If you want a short, repeatable set of commands to get a working developer environment (what I use):
+
+```bash
+# create the venv (outside the repo)
+python3 -m venv ~/.venv-setlistmaker
+
+# activate it (zsh / bash)
+source ~/.venv-setlistmaker/bin/activate
+
+# install modern deps (use requirements-3.14.txt for Python 3.14+)
+pip install -r requirements-3.14.txt
+
+# run the smoke-check to verify everything works
+python scripts/inspect_backup.py
+
+# when done, deactivate
+deactivate
+
+# (optional) run without activating by calling the venv python directly
+~/.venv-setlistmaker/bin/python scripts/inspect_backup.py
+```
+
+Notes:
+- The venv is intentionally stored outside the repository to avoid committing platform-specific or large binary files.
+- Keep `requirements-3.14.txt` updated when you add/remove dependencies. Use `pip freeze > requirements.lock.txt` to capture exact installed versions for reproducibility.
+- `.env.example` is provided as a template; copy it to `.env` and fill in values locally. `.env` is in `.gitignore` so it won't be committed.
+
+
 ### 3. Configure Environment Variables (if using Google Sheets integration)
 
 If you plan to use the `gsheet.ipynb` notebook (which syncs with Google Sheets), set up your credentials:
@@ -96,6 +126,8 @@ Set Songs:   770 records
 
 - **`scripts/inspect_backup.py`** – Smoke-check script that validates the environment and data loading.
 
+- **`scripts/analyze_songs.py`** – Analyzes the most commonly played songs from backup data.
+
 ## How to Use
 
 ### In a Notebook or Script
@@ -112,6 +144,46 @@ set_details = set_songs_df.merge(sets_df, on='setID').merge(songs_df, on='songID
 print(set_details)
 ```
 
+### Analyzing Most Played Songs
+
+To find the most commonly played songs across all sets:
+
+```bash
+# Analyze the default backup file (top 20)
+python scripts/analyze_songs.py
+
+# Analyze a specific backup file
+python scripts/analyze_songs.py SBPBackups/SBPBackup20260121.json
+
+# Get top 10 most played songs
+python scripts/analyze_songs.py SBPBackups/SBPBackup20260121.json 10
+
+# Get top 40 most played songs from last 9 months
+python scripts/analyze_songs.py SBPBackups/SBPBackup20260121.json 40 9
+
+# Exclude sets with 'MM6' in the name
+python scripts/analyze_songs.py SBPBackups/SBPBackup20260121.json 40 9 MM6
+
+# Exclude multiple patterns (comma-separated)
+python scripts/analyze_songs.py SBPBackups/SBPBackup20260121.json 40 9 "MM6,rehearsal"
+```
+
+Example output:
+```
+--- Most Commonly Played Songs (Top 40) (filtered to last 9 months, excluding sets containing: MM6) ---
+Rank  Play Count   Artist               Title
+------------------------------------------------------------
+1    67           Artist Name         Song Title
+2    20           Another Artist      Another Song
+...
+```
+
+Parameters:
+- `backup_file.json`: Path to your SBP backup file
+- `top_n`: Number of top songs to show (default: 20)
+- `months_back`: Filter to sets from last N months (optional)
+- `exclude_set_names`: Comma-separated list of strings to exclude sets containing these patterns (optional)
+
 ### Data from SBP Backup
 
 To create a fresh SBP backup:
@@ -121,6 +193,11 @@ To create a fresh SBP backup:
 4. Extract and find `dataFile.txt`
 5. Remove the leading version string (e.g., `1.0`) and format as JSON
 6. Save as `SBPBackupYYYYMMDD.json` in the repo root
+
+Then run the analysis on your new file:
+```bash
+python scripts/analyze_songs.py YourNewBackup.json
+```
 
 ## Notes
 
