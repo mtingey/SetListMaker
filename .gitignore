@@ -32,6 +32,9 @@ Thumbs.db
 .env
 .env.local
 
+# Streamlit secrets (API keys) — keep the .example, ignore the real one
+.streamlit/secrets.toml
+
 # Excel exports
 *.xlsx
 *.xls

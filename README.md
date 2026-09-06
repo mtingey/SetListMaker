@@ -1,7 +1,56 @@
-# SetListMaker
-An app to generate setlists for your band.
+# Colt 46 Setlist Maker
+An app to generate setlists for Colt 46 (an American-music band).
 
-Takes data from [Songbook Pro](https://www.songbookapp.com/) (SBP) backup exports, parses the JSON, and builds DataFrames for songs, sets, and set memberships to analyze setlist data.
+Branded with the Colt 46 logo and a black / vivid-green / steel-gray theme. MM6 songs are excluded from setlist generation (MM6 is a separate band); songs shared between Colt 46 and MM6 are kept.
+
+Takes data from [Songbook Pro](https://www.songbookapp.com/) (SBP) backup exports, parses the JSON, and builds DataFrames for songs, sets, and set memberships to analyze setlist data and generate new setlists.
+
+## Web App (Streamlit)
+
+A mobile-friendly web front end lives in [`app.py`](app.py). It lets you browse songs/sets, view per-band analytics (top-50 most-played, deep cuts, set runtimes), and generate new setlists from a band's playing history.
+
+```bash
+# from the repo root, with the venv active
+streamlit run app.py
+```
+
+Then open `http://localhost:8501` (works well on a phone browser over your LAN, or host it — see below).
+
+### Code layout
+
+- **`app.py`** – Streamlit UI (Generate / Analytics / Overview / Browse tabs).
+- **`setlist/data.py`** – loads & normalizes an SBP backup into a `Library` (songs, sets, set memberships, bands). Bands = SBP folders; sets are attributed to a band by the folder membership of their songs.
+- **`setlist/analytics.py`** – most-played, deep cuts, per-band overview, library summary.
+- **`setlist/generator.py`** – generates a setlist by sampling a band's history (weighted by play count) and ordering songs to mirror where they historically sit in a set. Can group the result by instrument (Dale's guitar: acoustic → either → electric) to minimize guitar swaps.
+- **`setlist/sheet.py`** – matches a song-detail sheet (CSV export of the Google Sheet, e.g. `C46SongList.csv`) to the SBP song library by fuzzy title match, and pulls in the `Dale Guitar` (acoustic/electric) and `Feel` columns. The app auto-discovers a `*.csv` in the repo root or a `gsheet_exports/` folder.
+- **`setlist/assistant.py`** – the natural-language **Assistant** tab. Gives the model the full annotated song catalog (song sheet + play counts) plus the band's conventions, and returns a structured setlist; follow-up prompts revise the current set (one ongoing conversation).
+
+### Assistant (Google Gemini API)
+
+The 🤖 Assistant tab turns prompts like *“give me an opening set for a night at the Westerner”* into setlists, and *“swap out Lot of Leavin”* into revisions. It uses the Google Gemini API, which has a **free tier**:
+
+1. Get a free API key at https://aistudio.google.com/apikey
+2. `cp .streamlit/secrets.toml.example .streamlit/secrets.toml`
+3. Put your key in it: `GEMINI_API_KEY = "..."` (or set the `GEMINI_API_KEY` env var).
+
+`secrets.toml` is gitignored. The model defaults to `gemini-3.6-flash`; override with `GEMINI_MODEL`.
+
+### Song-detail sheet (CSV)
+
+Export the band's Google Sheet tab to CSV and drop it in the repo root (or a `gsheet_exports/` folder). Expected columns include `Song Title`, `Artist`, `Dale Guitar` (Acoustic/Electric/Either), and optionally `Feel`, `Crowd Knows`, `Rank`, `SBP Song Name`. Rows are matched to SBP songs by title; when `SBP Song Name` is filled in it is used for a more exact match.
+
+### Hosting (self-host on a small VM)
+
+Streamlit is just a Python process, so it runs on a small VM (e.g. Hetzner). A minimal setup:
+
+```bash
+# on the server
+python3 -m venv ~/.venv-setlistmaker && source ~/.venv-setlistmaker/bin/activate
+pip install -r requirements-3.14.txt
+streamlit run app.py --server.port 8501 --server.address 0.0.0.0
+```
+
+Put nginx (or Caddy) in front for TLS + a domain, and run it under systemd so it restarts on boot.
 
 ## Setup
 

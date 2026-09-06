@@ -2,6 +2,8 @@
 # Excludes fuzzyset and python-Levenshtein (Python 3.14 incompatible)
 # Use RapidFuzz instead for fuzzy string matching
 
+streamlit==1.63.0
+google-genai==2.22.0
 pandas==2.3.3
 numpy==2.3.4
 jupyter==1.1.1

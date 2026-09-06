@@ -1,0 +1,15 @@
+[server]
+headless = true
+port = 8501
+
+[browser]
+gatherUsageStats = false
+
+# Colt 46 theme — derived from the band logo (black ground, vivid green, steel gray).
+[theme]
+base = "dark"
+primaryColor = "#1FA83C"
+backgroundColor = "#0A0C0B"
+secondaryBackgroundColor = "#151B1A"
+textColor = "#E9EDEB"
+font = "sans serif"
